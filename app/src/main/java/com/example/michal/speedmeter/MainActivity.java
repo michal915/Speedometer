@@ -94,12 +94,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void showEnableGpsDialog()
+    private void showEnableGpsDialog(String tmpWhereIsCalled)
     {
         AlertDialog.Builder alertDialogBuilder =
                 new AlertDialog.Builder(this)
                         .setTitle("GPS is Settings")
-                        .setMessage("GPS is not Enabled. Do you want to go to settings menu?")
+                        .setMessage("GPS is not Enabled. [" + tmpWhereIsCalled + "]?")
+                                //"/*Do you want to go to settings menu*/ "
+
                         .setPositiveButton("Settings", new DialogInterface.OnClickListener()
                         {
                             public void onClick(DialogInterface dialog, int which)
@@ -171,24 +173,24 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onStatusChanged(String provider, int status, Bundle extras) {
+            public void onStatusChanged(String provider, int status, Bundle extras)
+            {
 
             }
 
             @Override
-            public void onProviderEnabled(String provider) {
+            public void onProviderEnabled(String provider)
+            {
 
             }
 
             // check when the GPS is turned off
             @Override
-            public void onProviderDisabled(String provider) {
-                Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                startActivity(intent);
-
+            public void onProviderDisabled(String provider)
+            {
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
                 {
-                    showEnableGpsDialog();
+                    showEnableGpsDialog("onProviderDisabled");
                 }
             }
         };
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
-            showEnableGpsDialog();
+            showEnableGpsDialog("onResume");
         }
 
         initializeLocation();
