@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -19,6 +20,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
+import android.text.format.DateFormat;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
@@ -28,7 +30,10 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -40,11 +45,16 @@ public class MainActivity extends AppCompatActivity {
     TextView textVelocityView;
     TextView textDistanceView;
     TextView textFullDistanceView;
+    TextView textTimeView;
 
-    LocationManager locationManager;
+    LocationManager  locationManager;
     LocationListener locationListener;
 
     DistanceMonitor distanceMonitor;
+
+    long actualTime = 0;
+    long lastTime = 0;
+    long timeToPresent = 0;
 
     boolean isStarted = false;
 
@@ -150,7 +160,11 @@ public class MainActivity extends AppCompatActivity {
 
         try {
             locationManager.requestLocationUpdates("gps", refreshTimeMs, refreshDistanceMeters, locationListener);
-            distanceMonitor = new DistanceMonitor(this, locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER));
+            final Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+            distanceMonitor = new DistanceMonitor(this, location);
+            final long time = location.getTime();
+            actualTime = time;
+            lastTime  = time;
 
             isStarted = true;
         }
@@ -166,6 +180,7 @@ public class MainActivity extends AppCompatActivity {
         textVelocityView = (TextView) findViewById(R.id.text_velocity);
         textDistanceView = (TextView) findViewById(R.id.text_distance);
         textFullDistanceView = (TextView) findViewById(R.id.text_fullDistance);
+        textTimeView = (TextView) findViewById(R.id.text_time);
         textVelocityView.setText(createVelocityString(0 + getResources().getString(R.string.velocity_kmh)));
     }
 
@@ -187,19 +202,42 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location)
             {
+                if(location.hasSpeed())
+                {
+                    actualTime = location.getTime();
+                    timeToPresent += actualTime - lastTime;
+                    lastTime = actualTime;
+                }
+
+                else
+                {
+                    actualTime = location.getTime();
+                    lastTime = actualTime;
+                }
+
+
+                /// correct the time data
+                long millis = location.getTime();
+                long s = TimeUnit.MILLISECONDS.toSeconds(millis);
+                long m = TimeUnit.MILLISECONDS.toMinutes(millis);
+                long h = TimeUnit.MILLISECONDS.toHours(millis);
+
+                textTimeView.setText(h + ":" + m + ":" + s);
+
                 updateSpeed(location.getSpeed());
 
                 if(isStarted) {
                     final String distance = String.format(Locale.US, "%.2f",
-                            (distanceMonitor.updateDistance(location) * 0.001f)) +
+                            (distanceMonitor.updateDistance(location) * 0.001f)) + " " +
                             getResources().getString(R.string.distance_km);
                     textDistanceView.setText(distance);
                 }
 
                 final String fullDistance = String.format(Locale.US, "%.1f",
-                        (distanceMonitor.getFullDistance() * 0.001f)) +
+                        (distanceMonitor.getFullDistance() * 0.001f)) + " " +
                         getResources().getString(R.string.distance_km);
                 textFullDistanceView.setText(fullDistance);
+
             }
 
             @Override

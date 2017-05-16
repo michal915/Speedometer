@@ -11,4 +11,8 @@
     <string name="distance_miles">mil</string>
     <string name="distance_m">mil</string>
 
+    <string name="menu_distance">Distance:</string>
+    <string name="menu_full_distance">Full distance:</string>
+    <string name="menu_time">Time:</string>
+
 </resources>
