@@ -14,13 +14,11 @@ import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.Locale;
-import java.text.SimpleDateFormat;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -41,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     long actualTime = 0;
     long lastTime = 0;
-    long timeToPresent = 0;
+    static long timeToPresent = 0;
 
     boolean isStarted = false;
 
@@ -72,9 +70,9 @@ public class MainActivity extends AppCompatActivity {
         final long min = (mills/(1000*60)) % 60;
         final long sec = (mills / 1000) % 60;
 
-        String hh = String.format("%02d", hrs);
-        String mm = String.format("%02d", min);
-        String ss = String.format("%02d", sec);
+        final String hh = String.format("%02d", hrs);
+        final String mm = String.format("%02d", min);
+        final String ss = String.format("%02d", sec);
 
         return (hh + ":" + mm + ":" + ss);
     }
@@ -185,6 +183,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onSaveInstanceState(Bundle outState)
+    {
+        super.onSaveInstanceState(outState);
+        outState.putDouble("distance-key", distanceMonitor.getDistance());
+    }
+
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        super.onRestoreInstanceState(savedInstanceState);
+        distanceMonitor.setDistance(savedInstanceState.getFloat("distance-key"));
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -257,6 +268,8 @@ public class MainActivity extends AppCompatActivity {
         };
 
         initializeLocation();
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
 
     @Override

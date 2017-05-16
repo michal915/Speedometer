@@ -113,6 +113,17 @@ public class DistanceMonitor
     }
 
     /**
+     * Get the distance value
+     *
+     * @return gew distance value
+     *
+     */
+    public float getDistance()
+    {
+        return mDistance;
+    }
+
+    /**
      * Read the full distance value, (the value was already read
      * form sharedPreferences in the constructor, this function
      * not read the value from sharedPreferences, but from static
