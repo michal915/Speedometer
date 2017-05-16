@@ -1,45 +1,32 @@
 package com.example.michal.speedmeter;
 
-import android.Manifest;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
-import android.icu.text.SimpleDateFormat;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.Spannable;
 import android.text.SpannableString;
-import android.text.format.DateFormat;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
+import java.text.SimpleDateFormat;
 
 
 public class MainActivity extends AppCompatActivity {
 
    // configuration parameters
-    final long refreshTimeMs = 1000;
+    final long refreshTimeMs = 500;
     final long refreshDistanceMeters = 0;
 
     TextView textVelocityView;
@@ -74,9 +61,22 @@ public class MainActivity extends AppCompatActivity {
         String velocityValue = String.format("%.1f", (velocity));
         String velocityInfo = velocityValue + " " + format;
         SpannableString message =  new SpannableString(velocityInfo);
-        message.setSpan(new RelativeSizeSpan(5f), 0, velocityValue.length(), 0);
+        message.setSpan(new RelativeSizeSpan(3f), 0, velocityValue.length(), 0);
 
         return message;
+    }
+
+    private String createTimeString(long mills)
+    {
+        final long hrs = (mills/(1000 * 60 * 60));
+        final long min = (mills/(1000*60)) % 60;
+        final long sec = (mills / 1000) % 60;
+
+        String hh = String.format("%02d", hrs);
+        String mm = String.format("%02d", min);
+        String ss = String.format("%02d", sec);
+
+        return (hh + ":" + mm + ":" + ss);
     }
 
     private SpannableString createVelocityString(String format)
@@ -202,12 +202,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location)
             {
+                // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
                 if(location.hasSpeed())
                 {
                     actualTime = location.getTime();
-                    timeToPresent += actualTime - lastTime;
+                    timeToPresent += (actualTime - lastTime);
                     lastTime = actualTime;
-                }
+               }
 
                 else
                 {
@@ -215,19 +216,11 @@ public class MainActivity extends AppCompatActivity {
                     lastTime = actualTime;
                 }
 
-
-                /// correct the time data
-                long millis = location.getTime();
-                long s = TimeUnit.MILLISECONDS.toSeconds(millis);
-                long m = TimeUnit.MILLISECONDS.toMinutes(millis);
-                long h = TimeUnit.MILLISECONDS.toHours(millis);
-
-                textTimeView.setText(h + ":" + m + ":" + s);
+                textTimeView.setText(createTimeString(timeToPresent));
 
                 updateSpeed(location.getSpeed());
 
-                if(isStarted) {
-                    final String distance = String.format(Locale.US, "%.2f",
+                if(isStarted) {final String distance = String.format(Locale.US, "%.2f",
                             (distanceMonitor.updateDistance(location) * 0.001f)) + " " +
                             getResources().getString(R.string.distance_km);
                     textDistanceView.setText(distance);
