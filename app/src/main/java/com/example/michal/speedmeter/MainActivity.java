@@ -68,7 +68,8 @@ public class MainActivity extends AppCompatActivity {
 
     final int locationIndicator = 10;
 
-    TextView textView;
+    TextView textVelocityView;
+    TextView textDistanceView;
 
     LocationManager locationManager;
     LocationListener locationListener;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
             format = VelocityStringFormat.MPH;
         }
 
-        textView.setText(createVelocityString(speed, format));
+        textVelocityView.setText(createVelocityString(speed, format));
 
     }
 
@@ -151,14 +152,20 @@ public class MainActivity extends AppCompatActivity {
         locationManager.requestLocationUpdates("gps", refreshTimeMs, refreshDistanceMeters, locationListener);
     }
 
+    private void initializeTextView()
+    {
+        textVelocityView = (TextView) findViewById(R.id.text_velocity);
+        textDistanceView = (TextView) findViewById(R.id.text_distance);
+
+        textVelocityView.setText(createVelocityString(VelocityStringFormat.KPH) );
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        textView = (TextView) findViewById(R.id.text);
-
-        textView.setText(createVelocityString(VelocityStringFormat.KPH) );
+        initializeTextView();
 
         // the system service should be initialized, in constructor - type of service to request
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -170,6 +177,8 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location)
             {
                 updateSpeed(location.getSpeed());
+
+                
             }
 
             @Override

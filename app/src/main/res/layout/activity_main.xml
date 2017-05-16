@@ -8,8 +8,22 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:orientation="vertical" >
-    <TextView android:id="@+id/text"
+    <TextView android:id="@+id/text_velocity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="00.0km/h" />
+
+    <TextView android:id="@+id/text_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00.0km"
+        android:layout_below="@+id/text_velocity"
+        android:layout_toRightOf="@+id/text_distanceConst"/>
+
+    <TextView android:id="@+id/text_distanceConst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance :"
+        android:layout_below="@+id/text_velocity"/>
+
 </RelativeLayout>
