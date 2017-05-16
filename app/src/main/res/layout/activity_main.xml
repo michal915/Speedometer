@@ -26,4 +26,17 @@
         android:text="Distance :"
         android:layout_below="@+id/text_velocity"/>
 
+    <TextView android:id="@+id/text_fullDistanceConst"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full Distance :"
+        android:layout_below="@+id/text_distanceConst"/>
+
+    <TextView android:id="@+id/text_fullDistance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="00.0km"
+        android:layout_below="@+id/text_distanceConst"
+        android:layout_toRightOf="@+id/text_fullDistanceConst"/>
+
 </RelativeLayout>

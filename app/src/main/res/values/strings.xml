@@ -3,4 +3,12 @@
     <string name="about">About</string>
     <string name="settings">Settings</string>
 
+    <string name="velocity_kmh">km/h</string>
+    <string name="velocity_mph">mph</string>
+    <string name="velocity_mps">mps</string>
+
+    <string name="distance_km">km</string>
+    <string name="distance_miles">mil</string>
+    <string name="distance_m">mil</string>
+
 </resources>

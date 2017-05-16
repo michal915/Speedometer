@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -27,23 +28,30 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Locale;
+
 
 public class MainActivity extends AppCompatActivity {
 
    // configuration parameters
-   final long refreshTimeMs = 5000;
-   final long refreshDistanceMeters = 0;
+    final long refreshTimeMs = 1000;
+    final long refreshDistanceMeters = 0;
+
+    TextView textVelocityView;
+    TextView textDistanceView;
+    TextView textFullDistanceView;
+
+    LocationManager locationManager;
+    LocationListener locationListener;
+
+    DistanceMonitor distanceMonitor;
+
+    boolean isStarted = false;
 
     private class VelocityFormat
     {
         public static final float KPH = 3.6f;
         public static final float MPH = 2.23693629f;
-    }
-
-    private class VelocityStringFormat
-    {
-        public static final String KPH = "km/h";
-        public static final String MPH = "mph";
     }
 
     private float convertSpeed(float speedMps, float format)
@@ -66,14 +74,6 @@ public class MainActivity extends AppCompatActivity {
         return createVelocityString(0.0f, format);
     }
 
-    final int locationIndicator = 10;
-
-    TextView textVelocityView;
-    TextView textDistanceView;
-
-    LocationManager locationManager;
-    LocationListener locationListener;
-
     private void updateSpeed(float velocityMps)
     {
         float speed;
@@ -82,13 +82,13 @@ public class MainActivity extends AppCompatActivity {
         if(true)    // TODO: add configuration option to choosee Kph or Mph
         {
             speed = convertSpeed(velocityMps, VelocityFormat.KPH);
-            format = VelocityStringFormat.KPH;
+            format = getResources().getString(R.string.velocity_kmh);
         }
 
         else
         {
             speed = convertSpeed(velocityMps, VelocityFormat.MPH);
-            format = VelocityStringFormat.MPH;
+            format = getResources().getString(R.string.velocity_mph);
         }
 
         textVelocityView.setText(createVelocityString(speed, format));
@@ -145,19 +145,28 @@ public class MainActivity extends AppCompatActivity {
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
         {
             Toast.makeText(this, "Please enable Location in settings.", Toast.LENGTH_LONG).show();
-            //showEnableGpsDialog();
             return;
         }
 
-        locationManager.requestLocationUpdates("gps", refreshTimeMs, refreshDistanceMeters, locationListener);
+        try {
+            locationManager.requestLocationUpdates("gps", refreshTimeMs, refreshDistanceMeters, locationListener);
+            distanceMonitor = new DistanceMonitor(this, locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER));
+
+            isStarted = true;
+        }
+
+        catch (Exception e) {
+            e.printStackTrace();
+            return;
+        }
     }
 
     private void initializeTextView()
     {
         textVelocityView = (TextView) findViewById(R.id.text_velocity);
         textDistanceView = (TextView) findViewById(R.id.text_distance);
-
-        textVelocityView.setText(createVelocityString(VelocityStringFormat.KPH) );
+        textFullDistanceView = (TextView) findViewById(R.id.text_fullDistance);
+        textVelocityView.setText(createVelocityString(0 + getResources().getString(R.string.velocity_kmh)));
     }
 
     @Override
@@ -167,18 +176,30 @@ public class MainActivity extends AppCompatActivity {
 
         initializeTextView();
 
-        // the system service should be initialized, in constructor - type of service to request
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        //after init system service initialize a location listener
+        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
+            showEnableGpsDialog("onCreate");
+        }
+
         locationListener = new LocationListener() {
-            // call whenever the location is changed
             @Override
             public void onLocationChanged(Location location)
             {
                 updateSpeed(location.getSpeed());
 
-                
+                if(isStarted) {
+                    final String distance = String.format(Locale.US, "%.2f",
+                            (distanceMonitor.updateDistance(location) * 0.001f)) +
+                            getResources().getString(R.string.distance_km);
+                    textDistanceView.setText(distance);
+                }
+
+                final String fullDistance = String.format(Locale.US, "%.1f",
+                        (distanceMonitor.getFullDistance() * 0.001f)) +
+                        getResources().getString(R.string.distance_km);
+                textFullDistanceView.setText(fullDistance);
             }
 
             @Override
@@ -203,12 +224,22 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         };
+
+        initializeLocation();
     }
 
     @Override
     protected void onStart()
     {
         super.onStart();
+
+//        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+//        {
+//            showEnableGpsDialog("onResume");
+//        }
+//
+//        initializeLocation();
+
     }
 
     @Override
@@ -222,18 +253,19 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
 
-        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
-        {
-            showEnableGpsDialog("onResume");
-        }
-
-        initializeLocation();
+//        if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+//        {
+//            showEnableGpsDialog("onResume");
+//        }
+//
+//        initializeLocation();
     }
 
     @Override
     protected void onPause()
     {
         super.onPause();
+        distanceMonitor.saveFullDistance();
     }
 
     @Override
