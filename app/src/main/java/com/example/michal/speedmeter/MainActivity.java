@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeLocation(Bundle saveInstanceState)
+    private void initializeLocation()
     {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -163,8 +163,6 @@ public class MainActivity extends AppCompatActivity {
             final Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             distanceMonitor = new DistanceMonitor(this, location);
             final long time = location.getTime();
-           // distanceMonitor.setDistance(saveInstanceState.getFloat("distance-key"));
-            distanceMonitor.setDistance(0);
             actualTime = time;
             lastTime  = time;
 
@@ -275,7 +273,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        initializeLocation(savedInstanceState);
+        initializeLocation();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
