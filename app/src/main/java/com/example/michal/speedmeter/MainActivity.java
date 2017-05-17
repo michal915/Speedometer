@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
     private SpannableString createVelocityString(float velocity, String format)
     {
-        String velocityValue = String.format("%.1f", (velocity));
+        String velocityValue = String.format(Locale.US, "%.1f", (velocity));
         String velocityInfo = velocityValue + " " + format;
         SpannableString message =  new SpannableString(velocityInfo);
         message.setSpan(new RelativeSizeSpan(3f), 0, velocityValue.length(), 0);
@@ -69,11 +69,11 @@ public class MainActivity extends AppCompatActivity {
     {
         final long hrs = (mills/(1000 * 60 * 60));
         final long min = (mills/(1000*60)) % 60;
-        final long sec = (mills / 1000) % 60;
+        final long sec = (mills/1000) % 60;
 
-        final String hh = String.format("%02d", hrs);
-        final String mm = String.format("%02d", min);
-        final String ss = String.format("%02d", sec);
+        final String hh = String.format(Locale.US, "%02d", hrs);
+        final String mm = String.format(Locale.US, "%02d", min);
+        final String ss = String.format(Locale.US, "%02d", sec);
 
         return (hh + ":" + mm + ":" + ss);
     }
@@ -126,7 +126,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-        AlertDialog alertDialog = alertDialogBuilder.show();
+       // AlertDialog alertDialog =
+                alertDialogBuilder.show();
     }
 
     @Override
@@ -148,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void initializeLocation()
+    private void initializeLocation(Bundle saveInstanceState)
     {
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED)
@@ -162,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             final Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
             distanceMonitor = new DistanceMonitor(this, location);
             final long time = location.getTime();
+           // distanceMonitor.setDistance(saveInstanceState.getFloat("distance-key"));
+            distanceMonitor.setDistance(0);
             actualTime = time;
             lastTime  = time;
 
@@ -193,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putDouble("distance-key", distanceMonitor.getDistance());
+        outState.putFloat("distance-key", distanceMonitor.getDistance());
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState)
@@ -272,7 +275,7 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-        initializeLocation();
+        initializeLocation(savedInstanceState);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
     }
