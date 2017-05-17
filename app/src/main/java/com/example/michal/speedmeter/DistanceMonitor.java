@@ -108,7 +108,6 @@ public class DistanceMonitor
         mFullDistance += distanceToLast;
         mLastLocation = mActualLocation;
 
-
         return mDistance;
     }
 

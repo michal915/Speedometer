@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.math.BigDecimal;
 import java.util.Locale;
 
 
@@ -173,6 +174,12 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private static float round(float number, int decimalPlace) {
+        BigDecimal bd = new BigDecimal(Float.toString(number));
+        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
+        return bd.floatValue();
+    }
+
     private void initializeTextView()
     {
         textVelocityView = (TextView) findViewById(R.id.text_velocity);
@@ -228,18 +235,16 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 textTimeView.setText(createTimeString(timeToPresent));
-
                 updateSpeed(location.getSpeed());
 
-                if(isStarted) {final String distance = String.format(Locale.US, "%.2f",
-                            (distanceMonitor.updateDistance(location) * 0.001f)) + " " +
-                            getResources().getString(R.string.distance_km);
+                if(isStarted) {final String distance = String.format(Locale.US, "%.1f",
+                        round((distanceMonitor.updateDistance(location) * 0.001f), 1)) + " " + getResources().getString(R.string.distance_km);
                     textDistanceView.setText(distance);
                 }
 
+
                 final String fullDistance = String.format(Locale.US, "%.1f",
-                        (distanceMonitor.getFullDistance() * 0.001f)) + " " +
-                        getResources().getString(R.string.distance_km);
+                        (distanceMonitor.getFullDistance() * 0.001f)) + " " + getResources().getString(R.string.distance_km);
                 textFullDistanceView.setText(fullDistance);
 
             }
