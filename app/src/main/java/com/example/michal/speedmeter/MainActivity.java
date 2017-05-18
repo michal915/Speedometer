@@ -152,6 +152,10 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         distanceMonitor.setDistance(savedInstanceState.getFloat(Keys.distance));
         timeMonitor.setElapsedTime(savedInstanceState.getLong(Keys.time));
+
+        printer.printTime(timeMonitor.getElapsedTime());
+        printer.printDistance(distanceMonitor.getDistance());
+        printer.printFullDistance(distanceMonitor.getFullDistance());
     }
 
     @Override
