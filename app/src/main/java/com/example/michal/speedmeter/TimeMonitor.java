@@ -1,11 +1,5 @@
 package com.example.michal.speedmeter;
 
-import android.os.Build;
-
-/**
- * Created by michal on 5/18/17.
- */
-
 public class TimeMonitor {
     private long mActualTime;
     private long mLastTime;

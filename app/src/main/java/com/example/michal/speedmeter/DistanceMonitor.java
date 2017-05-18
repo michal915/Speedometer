@@ -69,7 +69,7 @@ public class DistanceMonitor
     {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.putFloat(Keys.fullDistance, input);
-        editor.commit();
+        editor.apply();
     }
 
     /**
@@ -142,7 +142,7 @@ public class DistanceMonitor
      * data inside the class, use writeFullDistance() or
      * readFullDistance instead
      *
-     * @return full distance value (meters)
+     * @param fullDistance full distance value (meters)
      *
      */
     public void setFullDistance(float fullDistance)
@@ -181,4 +181,4 @@ public class DistanceMonitor
     {
         return getSharedFullDistance(mContext);
     }
-};
+}
