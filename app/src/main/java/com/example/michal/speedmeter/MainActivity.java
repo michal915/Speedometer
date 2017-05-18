@@ -40,15 +40,9 @@ public class MainActivity extends AppCompatActivity {
 
     long actualTime = 0;
     long lastTime = 0;
-    static long timeToPresent = 0;
+    long timeToPresent = 0;
 
     boolean isStarted = false;
-
-    private class VelocityFormat
-    {
-        public static final float KPH = 3.6f;
-        public static final float MPH = 2.23693629f;
-    }
 
     private float convertSpeed(float speedMps, float format)
     {
@@ -126,27 +120,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
-       // AlertDialog alertDialog =
                 alertDialogBuilder.show();
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        int id = item.getItemId();
-        if(id == R.id.menu_settings)
-        {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     private void initializeLocation()
@@ -191,16 +165,38 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+        if(id == R.id.menu_settings)
+        {
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putFloat("distance-key", distanceMonitor.getDistance());
+        outState.putFloat(Keys.distance, distanceMonitor.getDistance());
+        outState.putLong(Keys.time, timeToPresent);
     }
 
+    @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
         super.onRestoreInstanceState(savedInstanceState);
-        distanceMonitor.setDistance(savedInstanceState.getFloat("distance-key"));
+        distanceMonitor.setDistance(savedInstanceState.getFloat(Keys.distance));
+        timeToPresent = savedInstanceState.getLong(Keys.time);
     }
 
     @Override
@@ -262,7 +258,6 @@ public class MainActivity extends AppCompatActivity {
 
             }
 
-            // check when the GPS is turned off
             @Override
             public void onProviderDisabled(String provider)
             {
