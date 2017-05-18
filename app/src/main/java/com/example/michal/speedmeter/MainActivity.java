@@ -37,10 +37,7 @@ public class MainActivity extends AppCompatActivity {
     LocationListener locationListener;
 
     DistanceMonitor distanceMonitor;
-
-    long actualTime = 0;
-    long lastTime = 0;
-    long timeToPresent = 0;
+    TimeMonitor timeMonitor;
 
     boolean isStarted = false;
 
@@ -135,10 +132,9 @@ public class MainActivity extends AppCompatActivity {
         try {
             locationManager.requestLocationUpdates("gps", refreshTimeMs, refreshDistanceMeters, locationListener);
             final Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
+
             distanceMonitor = new DistanceMonitor(this, location);
-            final long time = location.getTime();
-            actualTime = time;
-            lastTime  = time;
+            timeMonitor = new TimeMonitor(location.getTime());
 
             isStarted = true;
         }
@@ -175,8 +171,24 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item)
     {
         int id = item.getItemId();
+
+        switch(id)
+        {
+            case R.id.menu_settings:
+
+                break;
+
+            case R.id.menu_refresh:
+
+                distanceMonitor.setDistance(0);
+                timeMonitor.setElapsedTime(0);
+
+                break;
+        }
+
         if(id == R.id.menu_settings)
         {
+
             return true;
         }
 
@@ -188,7 +200,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onSaveInstanceState(outState);
         outState.putFloat(Keys.distance, distanceMonitor.getDistance());
-        outState.putLong(Keys.time, timeToPresent);
+        outState.putLong(Keys.time, timeMonitor.getElapsedTime());
     }
 
     @Override
@@ -196,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onRestoreInstanceState(savedInstanceState);
         distanceMonitor.setDistance(savedInstanceState.getFloat(Keys.distance));
-        timeToPresent = savedInstanceState.getLong(Keys.time);
+        timeMonitor.setElapsedTime(savedInstanceState.getLong(Keys.time));
     }
 
     @Override
@@ -220,18 +232,15 @@ public class MainActivity extends AppCompatActivity {
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
                 if(location.hasSpeed())
                 {
-                    actualTime = location.getTime();
-                    timeToPresent += (actualTime - lastTime);
-                    lastTime = actualTime;
-               }
+                    timeMonitor.updateElapsedTime(location.getTime());
+                }
 
                 else
                 {
-                    actualTime = location.getTime();
-                    lastTime = actualTime;
+                    timeMonitor.updateTime(location.getTime());
                 }
 
-                textTimeView.setText(createTimeString(timeToPresent));
+                textTimeView.setText(createTimeString(timeMonitor.getElapsedTime()));
                 updateSpeed(location.getSpeed());
 
                 if(isStarted) {final String distance = String.format(Locale.US, "%.1f",
