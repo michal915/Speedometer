@@ -10,16 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.math.BigDecimal;
-import java.util.Locale;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -28,14 +22,10 @@ public class MainActivity extends AppCompatActivity {
     final long refreshTimeMs = 500;
     final long refreshDistanceMeters = 0;
 
-    TextView textVelocityView;
-    TextView textDistanceView;
-    TextView textFullDistanceView;
-    TextView textTimeView;
-
     LocationManager  locationManager;
     LocationListener locationListener;
 
+    Printer printer;
     DistanceMonitor distanceMonitor;
     TimeMonitor timeMonitor;
 
@@ -44,34 +34,6 @@ public class MainActivity extends AppCompatActivity {
     private float convertSpeed(float speedMps, float format)
     {
         return (speedMps * format);
-    }
-
-    private SpannableString createVelocityString(float velocity, String format)
-    {
-        String velocityValue = String.format(Locale.US, "%.1f", (velocity));
-        String velocityInfo = velocityValue + " " + format;
-        SpannableString message =  new SpannableString(velocityInfo);
-        message.setSpan(new RelativeSizeSpan(3f), 0, velocityValue.length(), 0);
-
-        return message;
-    }
-
-    private String createTimeString(long mills)
-    {
-        final long hrs = (mills/(1000 * 60 * 60));
-        final long min = (mills/(1000*60)) % 60;
-        final long sec = (mills/1000) % 60;
-
-        final String hh = String.format(Locale.US, "%02d", hrs);
-        final String mm = String.format(Locale.US, "%02d", min);
-        final String ss = String.format(Locale.US, "%02d", sec);
-
-        return (hh + ":" + mm + ":" + ss);
-    }
-
-    private SpannableString createVelocityString(String format)
-    {
-        return createVelocityString(0.0f, format);
     }
 
     private void updateSpeed(float velocityMps)
@@ -91,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
             format = getResources().getString(R.string.velocity_mph);
         }
 
-        textVelocityView.setText(createVelocityString(speed, format));
+        printer.printVelocity(speed, format);
     }
 
     private void showEnableGpsDialog(String tmpWhereIsCalled)
@@ -142,21 +104,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
-    }
-
-    private static float round(float number, int decimalPlace) {
-        BigDecimal bd = new BigDecimal(Float.toString(number));
-        bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
-        return bd.floatValue();
-    }
-
-    private void initializeTextView()
-    {
-        textVelocityView = (TextView) findViewById(R.id.text_vel_value);
-        textDistanceView = (TextView) findViewById(R.id.text_distance_value);
-        textFullDistanceView = (TextView) findViewById(R.id.text_full_distance_value);
-        textTimeView = (TextView) findViewById(R.id.text_time_value);
-        textVelocityView.setText(createVelocityString(0 + getResources().getString(R.string.velocity_kmh)));
     }
 
     @Override
@@ -212,7 +159,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        initializeTextView();
+        printer = new Printer(this);
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -226,30 +173,22 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location)
             {
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
-                if(location.hasSpeed())
+                if(location.hasSpeed() && isStarted)
                 {
                     timeMonitor.updateElapsedTime(location.getTime());
+                    updateSpeed(location.getSpeed());
+                    distanceMonitor.updateDistance(location);
                 }
 
                 else
                 {
+                    updateSpeed(0);
                     timeMonitor.updateTime(location.getTime());
                 }
-
-                textTimeView.setText(createTimeString(timeMonitor.getElapsedTime()));
-                updateSpeed(location.getSpeed());
-
-                if(isStarted) {final String distance = String.format(Locale.US, "%.1f",
-                        round((distanceMonitor.updateDistance(location) * 0.001f), 1)) + " " + getResources().getString(R.string.distance_km);
-                    textDistanceView.setText(distance);
-                }
-
-                final long fullDistanceValue = (long)round((distanceMonitor.getFullDistance() * 0.001f),0);
-
-                final String fullDistance = String.format(Locale.US, "%d", fullDistanceValue)
-                        + " " + getResources().getString(R.string.distance_km);
-
-                textFullDistanceView.setText(fullDistance);
+                
+                printer.printTime(timeMonitor.getElapsedTime());
+                printer.printDistance(distanceMonitor.getDistance());
+                printer.printFullDistance(distanceMonitor.getFullDistance());
             }
 
             @Override
