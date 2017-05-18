@@ -157,10 +157,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void initializeTextView()
     {
-        textVelocityView = (TextView) findViewById(R.id.text_velocity);
-        textDistanceView = (TextView) findViewById(R.id.text_distance);
-        textFullDistanceView = (TextView) findViewById(R.id.text_fullDistance);
-        textTimeView = (TextView) findViewById(R.id.text_time);
+        textVelocityView = (TextView) findViewById(R.id.text_vel_value);
+        textDistanceView = (TextView) findViewById(R.id.text_distance_value);
+        textFullDistanceView = (TextView) findViewById(R.id.text_full_distance_value);
+        textTimeView = (TextView) findViewById(R.id.text_time_value);
         textVelocityView.setText(createVelocityString(0 + getResources().getString(R.string.velocity_kmh)));
     }
 
