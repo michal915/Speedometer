@@ -25,36 +25,32 @@ public class MainActivity extends AppCompatActivity {
     LocationManager  locationManager;
     LocationListener locationListener;
 
-    Printer printer;
+    Printer         printer;
     DistanceMonitor distanceMonitor;
-    TimeMonitor timeMonitor;
+    TimeMonitor     timeMonitor;
+    VelocityMonitor velocityMonitor;
 
     boolean isStarted = false;
 
-    private float convertSpeed(float speedMps, float format)
-    {
-        return (speedMps * format);
-    }
-
-    private void updateSpeed(float velocityMps)
-    {
-        float speed;
-        String format;
-
-        if(true)    // TODO: add configuration option to choosee Kph or Mph
-        {
-            speed = convertSpeed(velocityMps, VelocityFormat.KPH);
-            format = getResources().getString(R.string.velocity_kmh);
-        }
-
-        else
-        {
-            speed = convertSpeed(velocityMps, VelocityFormat.MPH);
-            format = getResources().getString(R.string.velocity_mph);
-        }
-
-        printer.printVelocity(speed, format);
-    }
+//    private void updateSpeed(float velocityMps)
+//    {
+//        float speed;
+//        String format;
+//
+//        if(true)    // TODO: add configuration option to choose Kph or Mph
+//        {
+//            speed = Convert.mpsTokph(velocityMps);
+//            format = getResources().getString(R.string.velocity_kmh);
+//        }
+//
+//        else
+//        {
+//            speed = Convert.mpsTomph(velocityMps);
+//            format = getResources().getString(R.string.velocity_mph);
+//        }
+//
+//        printer.printVelocity(speed, format);
+//    }
 
     private void showEnableGpsDialog(String tmpWhereIsCalled)
     {
@@ -144,6 +140,7 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
         outState.putFloat(Keys.distance, distanceMonitor.getDistance());
         outState.putLong(Keys.time, timeMonitor.getElapsedTime());
+        outState.putFloat(Keys.velocity, velocityMonitor.getVelocity());
     }
 
     @Override
@@ -152,10 +149,12 @@ public class MainActivity extends AppCompatActivity {
         super.onRestoreInstanceState(savedInstanceState);
         distanceMonitor.setDistance(savedInstanceState.getFloat(Keys.distance));
         timeMonitor.setElapsedTime(savedInstanceState.getLong(Keys.time));
+        velocityMonitor.setVelocity(savedInstanceState.getFloat(Keys.velocity));
 
         printer.printTime(timeMonitor.getElapsedTime());
         printer.printDistance(distanceMonitor.getDistance());
         printer.printFullDistance(distanceMonitor.getFullDistance());
+        printer.printVelocity(velocityMonitor.getVelocity());
     }
 
     @Override
@@ -164,6 +163,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         printer = new Printer(this);
+        velocityMonitor = new VelocityMonitor();
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -180,19 +180,20 @@ public class MainActivity extends AppCompatActivity {
                 if(location.hasSpeed() && isStarted)
                 {
                     timeMonitor.updateElapsedTime(location.getTime());
-                    updateSpeed(location.getSpeed());
+                    velocityMonitor.updateVelocity(location.getSpeed());
                     distanceMonitor.updateDistance(location);
                 }
 
                 else
                 {
-                    updateSpeed(0);
+                    velocityMonitor.updateVelocity(0);
                     timeMonitor.updateTime(location.getTime());
                 }
                 
                 printer.printTime(timeMonitor.getElapsedTime());
                 printer.printDistance(distanceMonitor.getDistance());
                 printer.printFullDistance(distanceMonitor.getFullDistance());
+                printer.printVelocity(velocityMonitor.getVelocity());
             }
 
             @Override

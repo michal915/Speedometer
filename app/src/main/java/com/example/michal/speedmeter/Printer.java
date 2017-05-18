@@ -47,9 +47,9 @@ public class Printer {
         return bd.floatValue();
     }
 
-    public void printVelocity(float speed, String format)
+    public void printVelocity(float speed)
     {
-        mTextVelocityView.setText(createVelocityString(speed, format));
+        mTextVelocityView.setText(createVelocityString(speed, "km/h"));
     }
 
     public void printDistance(float distance)
