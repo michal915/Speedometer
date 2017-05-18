@@ -32,26 +32,6 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isStarted = false;
 
-//    private void updateSpeed(float velocityMps)
-//    {
-//        float speed;
-//        String format;
-//
-//        if(true)    // TODO: add configuration option to choose Kph or Mph
-//        {
-//            speed = Convert.mpsTokph(velocityMps);
-//            format = getResources().getString(R.string.velocity_kmh);
-//        }
-//
-//        else
-//        {
-//            speed = Convert.mpsTomph(velocityMps);
-//            format = getResources().getString(R.string.velocity_mph);
-//        }
-//
-//        printer.printVelocity(speed, format);
-//    }
-
     private void showEnableGpsDialog(String tmpWhereIsCalled)
     {
         AlertDialog.Builder alertDialogBuilder =
@@ -124,11 +104,8 @@ public class MainActivity extends AppCompatActivity {
                 distanceMonitor.saveFullDistance(0);
                 timeMonitor.setElapsedTime(0);
                 break;
-        }
-
-        if(id == R.id.menu_settings)
-        {
-            return true;
+            default:
+                return false;
         }
 
         return super.onOptionsItemSelected(item);
@@ -164,7 +141,6 @@ public class MainActivity extends AppCompatActivity {
 
         printer = new Printer(this);
         velocityMonitor = new VelocityMonitor();
-
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
