@@ -92,7 +92,6 @@ public class MainActivity extends AppCompatActivity {
         }
 
         textVelocityView.setText(createVelocityString(speed, format));
-
     }
 
     private void showEnableGpsDialog(String tmpWhereIsCalled)
@@ -170,25 +169,22 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        int id = item.getItemId();
+        final int id = item.getItemId();
 
         switch(id)
         {
             case R.id.menu_settings:
-
                 break;
 
-            case R.id.menu_refresh:
-
-                distanceMonitor.setDistance(0);
+            case R.id.menu_reset:
+                distanceMonitor.resetDistance();
+                distanceMonitor.saveFullDistance(0);
                 timeMonitor.setElapsedTime(0);
-
                 break;
         }
 
         if(id == R.id.menu_settings)
         {
-
             return true;
         }
 
@@ -248,11 +244,12 @@ public class MainActivity extends AppCompatActivity {
                     textDistanceView.setText(distance);
                 }
 
+                final long fullDistanceValue = (long)round((distanceMonitor.getFullDistance() * 0.001f),0);
 
-                final String fullDistance = String.format(Locale.US, "%.1f",
-                        (distanceMonitor.getFullDistance() * 0.001f)) + " " + getResources().getString(R.string.distance_km);
+                final String fullDistance = String.format(Locale.US, "%d", fullDistanceValue)
+                        + " " + getResources().getString(R.string.distance_km);
+
                 textFullDistanceView.setText(fullDistance);
-
             }
 
             @Override
@@ -326,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop()
     {
         super.onStop();
+        distanceMonitor.saveFullDistance();
     }
 
     @Override

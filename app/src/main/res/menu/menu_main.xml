@@ -7,13 +7,14 @@
         android:title="@string/settings"
         android:orderInCategory="1"
         app:showAsAction="never" />
-    <item android:id="@+id/menu_refresh"
-        android:title="Refresh"
+
+    <item android:id="@+id/menu_reset"
+        android:title="Reset Data"
         android:orderInCategory="100"
         app:showAsAction="never" />
+
     <item android:id="@+id/menu_about"
         android:title="@string/about"
         android:orderInCategory="100"
         app:showAsAction="never" />
-
 </menu>

@@ -8,12 +8,11 @@ import android.location.Location;
 public class DistanceMonitor
 {
     private static String mPREFERENCE_NAME = "SpeedMeterPrefs";
-    private static String mFullDistanceKey = "fullDistanceKey";
     private Location      mActualLocation;
     private Location      mLastLocation;
     private float         mDistance; // meters
     private static float  mFullDistance;
-    Context               mContext;
+    private Context       mContext;
 
     /**
      * DistanceMonitor constructor, initialize both locations data to
@@ -56,7 +55,7 @@ public class DistanceMonitor
      */
     private static float getSharedFullDistance(Context context)
     {
-        return getSharedPreference(context).getFloat(mFullDistanceKey, 0.0f);
+        return getSharedPreference(context).getFloat(Keys.fullDistance, 0.0f);
     }
 
     /**
@@ -69,14 +68,14 @@ public class DistanceMonitor
     private static void setSharedFullDistance(Context context, float input)
     {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
-        editor.putFloat(mFullDistanceKey, input);
+        editor.putFloat(Keys.fullDistance, input);
         editor.commit();
     }
 
     /**
      * Set the distance value
      *
-     * @param distance set new distance value
+     * @param distance set new distance value  (meters)
      *
      */
     public void setDistance(float distance)
@@ -85,7 +84,7 @@ public class DistanceMonitor
     }
 
     /**
-     * Reset distance value
+     * Reset distance value (set to zero)
      */
     public void resetDistance()
     {
@@ -114,7 +113,7 @@ public class DistanceMonitor
     /**
      * Get the distance value
      *
-     * @return gew distance value
+     * @return get distance value  (meters)
      *
      */
     public float getDistance()
@@ -128,7 +127,7 @@ public class DistanceMonitor
      * not read the value from sharedPreferences, but from static
      * data inside the class
      *
-     * @return full distance value
+     * @return full distance value (meters)
      *
      */
     public float getFullDistance()
@@ -143,7 +142,7 @@ public class DistanceMonitor
      * data inside the class, use writeFullDistance() or
      * readFullDistance instead
      *
-     * @return full distance value
+     * @return full distance value (meters)
      *
      */
     public void setFullDistance(float fullDistance)
@@ -154,7 +153,7 @@ public class DistanceMonitor
     /**
      * Write the full distance value into sharedPreference
      *
-     * @param input full distance value to be write
+     * @param input full distance value to be write (meters)
      *
      */
     public void saveFullDistance(float input)
@@ -175,7 +174,7 @@ public class DistanceMonitor
     /**
      * Write the full distance value into sharedPreference
      *
-     * @return fullDistance value from sharedPreference
+     * @return fullDistance value from sharedPreference (meters)
      *
      */
     public float readFullDistance()
