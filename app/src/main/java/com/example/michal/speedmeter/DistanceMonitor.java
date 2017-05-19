@@ -32,7 +32,7 @@ public class DistanceMonitor
 
 
     /**
-     * Get the shared pereference object
+     * Get the shared preference object
      *
      * @param context current context
      *

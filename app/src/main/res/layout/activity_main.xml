@@ -28,11 +28,39 @@
 
 
     <LinearLayout
-        android:id="@+id/layout_distance"
+        android:id="@+id/layout_max_velocity"
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/layout_vel"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/text_max_velocity_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Max velocity"
+            android:textColor="@color/colorBlack"
+            android:textSize="22sp"
+            android:layout_weight="0.5"/>
+        <TextView
+            android:id="@+id/text_max_velocity_value"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="00.0 km/h"
+            android:textColor="@color/colorBlack"
+            android:textSize="22sp"
+            android:gravity="right"
+            android:layout_weight="0.5"/>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/layout_distance"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/layout_max_velocity"
         android:weightSum="1">
 
         <TextView

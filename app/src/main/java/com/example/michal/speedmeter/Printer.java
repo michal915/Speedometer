@@ -13,15 +13,17 @@ public class Printer {
     private TextView mTextDistanceView;
     private TextView mTextFullDistanceView;
     private TextView mTextTimeView;
+    private TextView mTextMaxVelocityView;
     private Activity mActivity;
 
     Printer(Activity activity)
     {
         mActivity = activity;
-        mTextVelocityView = (TextView) mActivity.findViewById(R.id.text_vel_value);
-        mTextDistanceView = (TextView) mActivity.findViewById(R.id.text_distance_value);
+        mTextVelocityView     = (TextView) mActivity.findViewById(R.id.text_vel_value);
+        mTextDistanceView     = (TextView) mActivity.findViewById(R.id.text_distance_value);
         mTextFullDistanceView = (TextView) mActivity.findViewById(R.id.text_full_distance_value);
-        mTextTimeView = (TextView) mActivity.findViewById(R.id.text_time_value);
+        mTextTimeView         = (TextView) mActivity.findViewById(R.id.text_time_value);
+        mTextMaxVelocityView  = (TextView) mActivity.findViewById(R.id.text_max_velocity_value);
         mTextVelocityView.setText(createVelocityString(0 + mActivity.getResources().getString(R.string.velocity_kmh)));
     }
 
@@ -49,6 +51,11 @@ public class Printer {
     public void printVelocity(float speed)
     {
         mTextVelocityView.setText(createVelocityString(speed, "km/h"));
+    }
+
+    public void printMaxVelocity(float speed)
+    {
+        mTextMaxVelocityView.setText((speed + " km/h"));
     }
 
     public void printDistance(float distance)

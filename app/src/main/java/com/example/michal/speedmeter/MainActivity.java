@@ -102,6 +102,7 @@ public class MainActivity extends AppCompatActivity {
                 distanceMonitor.resetDistance();
                 distanceMonitor.saveFullDistance(0);
                 timeMonitor.setElapsedTime(0);
+                velocityMonitor.writeMaxVelocity(0.0f);
                 break;
             default:
                 return false;
@@ -131,6 +132,7 @@ public class MainActivity extends AppCompatActivity {
         printer.printDistance(distanceMonitor.getDistance());
         printer.printFullDistance(distanceMonitor.getFullDistance());
         printer.printVelocity(velocityMonitor.getVelocity());
+        printer.printMaxVelocity(velocityMonitor.readMaxVelocity());
     }
 
     @Override
@@ -139,7 +141,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         printer = new Printer(this);
-        velocityMonitor = new VelocityMonitor();
+        velocityMonitor = new VelocityMonitor(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -174,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                 printer.printDistance(distanceMonitor.getDistance());
                 printer.printFullDistance(distanceMonitor.getFullDistance());
                 printer.printVelocity(velocityMonitor.getVelocity());
+                printer.printMaxVelocity(velocityMonitor.getMaxVelocity());
             }
 
             @Override
