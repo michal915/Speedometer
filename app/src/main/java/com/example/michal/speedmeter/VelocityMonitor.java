@@ -55,7 +55,7 @@ public class VelocityMonitor {
      * Write the shared preference data
      *
      * @param context current context
-     * @param input full distance value
+     * @param input max velocity
      *
      */
     private static void setSharedMaxVelocity(Context context, float input)

@@ -9,6 +9,6 @@ public class Keys
     public static final String velocity = "com.speedometer.velocity-key";
     public static final String maxVelocity = "com.speedometer.maxVelocity-key";
     public static final String distance = "com.speedometer.distance-key";
-    public static final String fullDistance = "com.speedometer.full-distance-key";
+    public static final String totalDistance = "com.speedometer.total-distance-key";
     public static final String time = "com.speedometer.time-key";
 }

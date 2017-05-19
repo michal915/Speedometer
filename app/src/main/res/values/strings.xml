@@ -13,7 +13,7 @@
 
     <string name="menu_max_vel">Max Velocity</string>
     <string name="menu_distance">Distance</string>
-    <string name="menu_full_distance">Full distance</string>
+    <string name="menu_full_distance">Total distance</string>
     <string name="menu_time">Time</string>
 
 </resources>

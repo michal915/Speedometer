@@ -55,7 +55,9 @@ public class Printer {
 
     public void printMaxVelocity(float speed)
     {
-        mTextMaxVelocityView.setText((speed + " km/h"));
+        speed = round(speed, 1);
+        String speedText = String.format(Locale.US, "%.1f", speed);
+        mTextMaxVelocityView.setText(speedText + " km/h");
     }
 
     public void printDistance(float distance)
@@ -65,14 +67,14 @@ public class Printer {
         mTextDistanceView.setText(distanceText);
     }
 
-    public void printFullDistance(float fullDistance)
+    public void printTotalDistance(float totalDistance)
     {
-        final long fullDistanceValue = (long)round((fullDistance * 0.001f),0);
+        final long totalDistanceValue = (long)round((totalDistance * 0.001f),0);
 
-        final String fullDistanceText = String.format(Locale.US, "%d", fullDistanceValue)
+        final String totalDistanceText = String.format(Locale.US, "%d", totalDistanceValue)
                 + " " + mActivity.getResources().getString(R.string.distance_km);
 
-        mTextFullDistanceView.setText(fullDistanceText);
+        mTextFullDistanceView.setText(totalDistanceText);
     }
 
     public void printTime(long mills)

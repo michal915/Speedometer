@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
-                                startActivity(new Intent("android.settings.LOCATION_SOURCE_SETTINGS"));
+                                startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
                 {
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.menu_reset:
                 distanceMonitor.resetDistance();
-                distanceMonitor.saveFullDistance(0);
+                distanceMonitor.writeTotalDistance(0);
                 timeMonitor.setElapsedTime(0);
                 velocityMonitor.writeMaxVelocity(0.0f);
                 break;
@@ -115,8 +116,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onSaveInstanceState(Bundle outState)
     {
         super.onSaveInstanceState(outState);
-        outState.putFloat(Keys.distance, distanceMonitor.getDistance());
-        outState.putLong(Keys.time, timeMonitor.getElapsedTime());
+        if(distanceMonitor != null) {
+            outState.putFloat(Keys.distance, distanceMonitor.getDistance());
+        }
+        if(timeMonitor != null) {
+            outState.putLong(Keys.time, timeMonitor.getElapsedTime());
+        }
+
         outState.putFloat(Keys.velocity, velocityMonitor.getVelocity());
     }
 
@@ -130,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
 
         printer.printTime(timeMonitor.getElapsedTime());
         printer.printDistance(distanceMonitor.getDistance());
-        printer.printFullDistance(distanceMonitor.getFullDistance());
+        printer.printTotalDistance(distanceMonitor.getTotalDistance());
         printer.printVelocity(velocityMonitor.getVelocity());
         printer.printMaxVelocity(velocityMonitor.readMaxVelocity());
     }
@@ -145,6 +151,11 @@ public class MainActivity extends AppCompatActivity {
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
+        {
+            showEnableGpsDialog("onCreate");
+        }
+
+        if(!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
         {
             showEnableGpsDialog("onCreate");
         }
@@ -174,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
                 
                 printer.printTime(timeMonitor.getElapsedTime());
                 printer.printDistance(distanceMonitor.getDistance());
-                printer.printFullDistance(distanceMonitor.getFullDistance());
+                printer.printTotalDistance(distanceMonitor.getTotalDistance());
                 printer.printVelocity(velocityMonitor.getVelocity());
                 printer.printMaxVelocity(velocityMonitor.getMaxVelocity());
             }
@@ -243,14 +254,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onPause()
     {
         super.onPause();
-        distanceMonitor.saveFullDistance();
+        distanceMonitor.writeTotalDistance();
     }
 
     @Override
     protected void onStop()
     {
         super.onStop();
-        distanceMonitor.saveFullDistance();
+        distanceMonitor.writeTotalDistance();
     }
 
     @Override

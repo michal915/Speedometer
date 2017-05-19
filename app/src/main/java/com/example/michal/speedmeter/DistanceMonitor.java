@@ -10,12 +10,12 @@ public class DistanceMonitor
     private Location      mActualLocation;
     private Location      mLastLocation;
     private float         mDistance; // meters
-    private float         mFullDistance;
+    private float         mTotalDistance;
     private Context       mContext;
 
     /**
      * DistanceMonitor constructor, initialize both locations data to
-     * actual position, read the fullDistance from sharedPreference
+     * actual position, read the Total Distance from sharedPreference
      * and set the current distance value to 0
      *
      * @param context current context
@@ -27,7 +27,7 @@ public class DistanceMonitor
         mLastLocation = location;
         mDistance = 0.0f;
         mContext = context;
-        mFullDistance = readFullDistance();
+        mTotalDistance = readTotalDistance();
     }
 
 
@@ -49,25 +49,25 @@ public class DistanceMonitor
      *
      * @param context current context
      *
-     * @return full distance since application installed
+     * @return total distance since application installed
      *
      */
-    private static float getSharedFullDistance(Context context)
+    private static float getSharedTotalDistance(Context context)
     {
-        return getSharedPreference(context).getFloat(Keys.fullDistance, 0.0f);
+        return getSharedPreference(context).getFloat(Keys.totalDistance, 0.0f);
     }
 
     /**
      * Write the shared preference data
      *
      * @param context current context
-     * @param input full distance value
+     * @param input total distance value
      *
      */
-    private static void setSharedFullDistance(Context context, float input)
+    private static void setSharedTotalDistance(Context context, float input)
     {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
-        editor.putFloat(Keys.fullDistance, input);
+        editor.putFloat(Keys.totalDistance, input);
         editor.apply();
     }
 
@@ -103,7 +103,7 @@ public class DistanceMonitor
         mActualLocation = location;
         final float distanceToLast = location.distanceTo(mLastLocation);
         mDistance += distanceToLast;
-        mFullDistance += distanceToLast;
+        mTotalDistance += distanceToLast;
         mLastLocation = mActualLocation;
 
         return mDistance;
@@ -121,63 +121,63 @@ public class DistanceMonitor
     }
 
     /**
-     * Read the full distance value, (the value was already read
+     * Read the total distance value, (the value was already read
      * form sharedPreferences in the constructor, this function
      * not read the value from sharedPreferences, but from static
      * data inside the class
      *
-     * @return full distance value (meters)
+     * @return total distance value (meters)
      *
      */
-    public float getFullDistance()
+    public float getTotalDistance()
     {
-        return mFullDistance;
+        return mTotalDistance;
     }
 
     /**
-     * Write the full distance value, (the value was already read
+     * Write the total distance value, (the value was already read
      * form sharedPreferences in the constructor, this function
      * not write the value into sharedPreferences, but from static
-     * data inside the class, use writeFullDistance() or
-     * readFullDistance instead
+     * data inside the class, use writeTotalDistance() or
+     * readTotalDistance instead
      *
-     * @param fullDistance full distance value (meters)
+     * @param totalDistance total distance value (meters)
      *
      */
-    public void setFullDistance(float fullDistance)
+    public void setTotalDistance(float totalDistance)
     {
-        mFullDistance = fullDistance;
+        mTotalDistance = totalDistance;
     }
 
     /**
-     * Write the full distance value into sharedPreference
+     * Write the total distance value into sharedPreference
      *
-     * @param input full distance value to be write (meters)
+     * @param input total distance value to be write (meters)
      *
      */
-    public void saveFullDistance(float input)
+    public void writeTotalDistance(float input)
     {
-        mFullDistance = input;
-        setSharedFullDistance(mContext, mFullDistance);
+        mTotalDistance = input;
+        setSharedTotalDistance(mContext, mTotalDistance);
     }
 
     /**
-     * Write the full distance value into sharedPreference
+     * Write the total distance value into sharedPreference
      *
      */
-    public void saveFullDistance()
+    public void writeTotalDistance()
     {
-        setSharedFullDistance(mContext, mFullDistance);
+        setSharedTotalDistance(mContext, mTotalDistance);
     }
 
     /**
-     * Write the full distance value into sharedPreference
+     * Write the total distance value into sharedPreference
      *
-     * @return fullDistance value from sharedPreference (meters)
+     * @return total value from sharedPreference (meters)
      *
      */
-    public float readFullDistance()
+    public float readTotalDistance()
     {
-        return getSharedFullDistance(mContext);
+        return getSharedTotalDistance(mContext);
     }
 }
