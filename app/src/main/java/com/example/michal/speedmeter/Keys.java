@@ -5,6 +5,7 @@ package com.example.michal.speedmeter;
  */
 public class Keys
 {
+    public static final String preferenceName = "com.speedometer.SpeedMeterPrefs-key";
     public static final String velocity = "com.speedometer.velocity-key";
     public static final String distance = "com.speedometer.distance-key";
     public static final String fullDistance = "com.speedometer.full-distance-key";

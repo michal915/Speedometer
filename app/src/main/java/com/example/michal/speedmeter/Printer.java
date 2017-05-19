@@ -3,7 +3,6 @@ package com.example.michal.speedmeter;
 import android.app.Activity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
-import android.view.View;
 import android.widget.TextView;
 
 import java.math.BigDecimal;

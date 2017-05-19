@@ -152,11 +152,16 @@ public class MainActivity extends AppCompatActivity {
             public void onLocationChanged(Location location)
             {
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
-                if(location.hasSpeed() && isStarted)
+
+                if(isStarted)
                 {
-                    timeMonitor.updateElapsedTime(location.getTime());
-                    velocityMonitor.updateVelocity(location.getSpeed());
                     distanceMonitor.updateDistance(location);
+
+                    if(location.hasSpeed())
+                    {
+                        timeMonitor.updateElapsedTime(location.getTime());
+                        velocityMonitor.updateVelocity(location.getSpeed());
+                    }
                 }
 
                 else

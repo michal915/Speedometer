@@ -16,8 +16,8 @@ public class VelocityMonitor {
 
     public void updateVelocity(float velocityMps)
     {
-        Convert.mpsTokph(velocityMps);
-        mVelocity = Convert.mpsTokph(velocityMps);
+        ConvertSpeed.mpsTokph(velocityMps);
+        mVelocity = ConvertSpeed.mpsTokph(velocityMps);
     }
 
     public float getVelocity()

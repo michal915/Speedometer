@@ -1,7 +1,6 @@
 package com.example.michal.speedmeter;
 
-public class Convert {
-
+public class ConvertSpeed {
     /**
      * Meter per second to Kilometers per hours
      *
@@ -26,27 +25,29 @@ public class Convert {
         return mps * 2.23693629f;
     }
 
-    /**
-     * Meters to Miles
-     *
-     * @param m distance meters
-     *
-     * @return distance miles
-     */
-    public static float mTomil(float m)
-    {
-        return -1;
-    }
 
     /**
-     * Kilometers to Miles
+     * Kilometers per hour to Miles per hours
      *
-     * @param km distance kilometers
+     * @param kph velocity km/h
      *
-     * @return distance miles
+     * @return velocity mph
      */
-    public static float kmTomil(float km)
+    public static float kphTomph(float kph)
     {
-        return -1;
+        return kph * 0.621371f;
+    }
+
+
+    /**
+     * Miles per hours to Kilometers per hour
+     *
+     * @param mph velocity mph
+     *
+     * @return velocity km/h
+     */
+    public static float mphTokph(float mph)
+    {
+        return mph * 1.60934f;
     }
 }

@@ -7,11 +7,10 @@ import android.location.Location;
 
 public class DistanceMonitor
 {
-    private static String mPREFERENCE_NAME = "SpeedMeterPrefs";
     private Location      mActualLocation;
     private Location      mLastLocation;
     private float         mDistance; // meters
-    private static float  mFullDistance;
+    private float         mFullDistance;
     private Context       mContext;
 
     /**
@@ -42,7 +41,7 @@ public class DistanceMonitor
      */
     private static SharedPreferences getSharedPreference(Context context)
     {
-        return context.getSharedPreferences(mPREFERENCE_NAME, Context.MODE_PRIVATE);
+        return context.getSharedPreferences(Keys.preferenceName, Context.MODE_PRIVATE);
     }
 
     /**
