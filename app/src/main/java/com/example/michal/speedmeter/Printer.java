@@ -42,7 +42,7 @@ public class Printer {
         return createVelocityString(0.0f, format);
     }
 
-    private static float round(float number, int decimalPlace) {
+    private float round(float number, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(number));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
