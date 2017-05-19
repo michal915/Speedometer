@@ -2,7 +2,6 @@ package com.example.michal.speedmeter;
 
 public class ConvertDistance {
 
-
     /**
      * Meters to Miles
      *

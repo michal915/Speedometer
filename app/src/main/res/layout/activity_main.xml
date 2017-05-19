@@ -39,7 +39,7 @@
             android:id="@+id/text_max_velocity_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Max velocity"
+            android:text="@string/menu_max_vel"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
             android:layout_weight="0.5"/>
@@ -67,7 +67,7 @@
             android:id="@+id/text_distance_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Distance"
+            android:text="@string/menu_distance"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
             android:layout_weight="0.5"/>
@@ -95,7 +95,7 @@
             android:id="@+id/text_full_distance_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Full distance"
+            android:text="@string/menu_full_distance"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
             android:layout_weight="0.5"/>
@@ -123,7 +123,7 @@
             android:id="@+id/text_time_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Time"
+            android:text="@string/menu_time"
             android:textColor="@color/colorBlack"
             android:textSize="22sp"
             android:layout_weight="0.5"/>
