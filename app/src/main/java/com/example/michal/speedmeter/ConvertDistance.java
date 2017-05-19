@@ -4,9 +4,7 @@ public class ConvertDistance {
 
     /**
      * Meters to Miles
-     *
      * @param m distance meters
-     *
      * @return distance miles
      */
     public static float mTomil(float m)
@@ -14,12 +12,9 @@ public class ConvertDistance {
         return m* 0.000621371f;
     }
 
-
     /**
      * Kilometers to Miles
-     *
      * @param km distance kilometers
-     *
      * @return distance miles
      */
     public static float kmTomil(float km)
@@ -30,9 +25,7 @@ public class ConvertDistance {
 
     /**
      * Miles to kilometers
-     *
      * @param mil distance miles
-     *
      * @return distance kilometers
      */
     public static float milTokm(float mil)
@@ -40,19 +33,14 @@ public class ConvertDistance {
         return mil * 1.60934f;
     }
 
-
     /**
      * Miles to meters
-     *
      * @param mil distance miles
-     *
      * @return distance meters
      */
     public static float milTom(float mil)
     {
         return mil * 0.621371f;
     }
-
-
 
 }

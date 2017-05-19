@@ -155,17 +155,11 @@ public class MainActivity extends AppCompatActivity {
             showEnableGpsDialog("onCreate");
         }
 
-        if(!locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER))
-        {
-            showEnableGpsDialog("onCreate");
-        }
-
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location)
             {
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
-
                 if(isStarted)
                 {
                     distanceMonitor.updateDistance(location);

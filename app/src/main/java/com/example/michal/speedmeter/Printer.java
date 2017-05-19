@@ -8,6 +8,10 @@ import android.widget.TextView;
 import java.math.BigDecimal;
 import java.util.Locale;
 
+/**
+ * Printer is using to print the data into textView boxes
+ * and other gui elements
+ */
 public class Printer {
     private TextView mTextVelocityView;
     private TextView mTextDistanceView;
@@ -16,6 +20,10 @@ public class Printer {
     private TextView mTextMaxVelocityView;
     private Activity mActivity;
 
+    /**
+     * Constructor initialize the gui objects using activity from main
+     * @param activity
+     */
     Printer(Activity activity)
     {
         mActivity = activity;
@@ -27,6 +35,12 @@ public class Printer {
         mTextVelocityView.setText(createVelocityString(0 + mActivity.getResources().getString(R.string.velocity_kmh)));
     }
 
+    /**
+     * Create the SpannableString with velocity value
+     * @param velocity velocity km/h
+     * @param format metric system km/h, mps, ms
+     * @return string to show
+     */
     private SpannableString createVelocityString(float velocity, String format)
     {
         String velocityValue = String.format(Locale.US, "%.1f", (velocity));
@@ -37,29 +51,52 @@ public class Printer {
         return message;
     }
 
+    /**
+     * Create the SpannableString with velocity input value equal to 0 km/h
+     * @param format metric system km/h, mps, ms
+     * @return string to show
+     */
     private SpannableString createVelocityString(String format)
     {
         return createVelocityString(0.0f, format);
     }
 
+    /**
+     * Round value, using mathematical concept
+     * @param number number to round
+     * @param decimalPlace precision
+     * @return rounded value
+     */
     private float round(float number, int decimalPlace) {
         BigDecimal bd = new BigDecimal(Float.toString(number));
         bd = bd.setScale(decimalPlace, BigDecimal.ROUND_HALF_UP);
         return bd.floatValue();
     }
 
-    public void printVelocity(float speed)
+    /**
+     * Print actual velocity
+     * @param velocity in km/h
+     */
+    public void printVelocity(float velocity)
     {
-        mTextVelocityView.setText(createVelocityString(speed, "km/h"));
+        mTextVelocityView.setText(createVelocityString(velocity, "km/h"));
     }
 
-    public void printMaxVelocity(float speed)
+    /**
+     * Print value of maximal velocity
+     * @param velocity
+     */
+    public void printMaxVelocity(float velocity)
     {
-        speed = round(speed, 1);
-        String speedText = String.format(Locale.US, "%.1f", speed);
+        velocity = round(velocity, 1);
+        String speedText = String.format(Locale.US, "%.1f", velocity);
         mTextMaxVelocityView.setText(speedText + " km/h");
     }
 
+    /**
+     * Print distance
+     * @param distance distance in meters
+     */
     public void printDistance(float distance)
     {
         final String distanceText = String.format(Locale.US, "%.1f",
@@ -67,6 +104,10 @@ public class Printer {
         mTextDistanceView.setText(distanceText);
     }
 
+    /**
+     * Print distance
+     * @param totalDistance total distance in meters
+     */
     public void printTotalDistance(float totalDistance)
     {
         final long totalDistanceValue = (long)round((totalDistance * 0.001f),0);
@@ -77,6 +118,10 @@ public class Printer {
         mTextFullDistanceView.setText(totalDistanceText);
     }
 
+    /**
+     * Print time in format hh:mm:ss:
+     * @param mills linux epoch time in millisecond
+     */
     public void printTime(long mills)
     {
         final long hrs = (mills/(1000 * 60 * 60));

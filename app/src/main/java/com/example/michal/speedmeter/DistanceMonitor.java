@@ -4,20 +4,24 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 
-
+/**
+ * DistanceMonitor monitoring the values of
+ * actual distance and total distance since the
+ * application was installed all values is
+ * represented in meters.
+ */
 public class DistanceMonitor
 {
     private Location      mActualLocation;
     private Location      mLastLocation;
-    private float         mDistance; // meters
+    private float         mDistance;
     private float         mTotalDistance;
     private Context       mContext;
 
     /**
      * DistanceMonitor constructor, initialize both locations data to
      * actual position, read the Total Distance from sharedPreference
-     * and set the current distance value to 0
-     *
+     * and set the current distance value to 0.
      * @param context current context
      * @param location current location
      *
@@ -30,14 +34,10 @@ public class DistanceMonitor
         mTotalDistance = readTotalDistance();
     }
 
-
     /**
-     * Get the shared preference object
-     *
+     * Get the shared preference object.
      * @param context current context
-     *
      * @return shared preferences object
-     *
      */
     private static SharedPreferences getSharedPreference(Context context)
     {
@@ -45,12 +45,9 @@ public class DistanceMonitor
     }
 
     /**
-     * Read the shared preference data
-     *
+     * Read the shared preference data.
      * @param context current context
-     *
      * @return total distance since application installed
-     *
      */
     private static float getSharedTotalDistance(Context context)
     {
@@ -58,11 +55,9 @@ public class DistanceMonitor
     }
 
     /**
-     * Write the shared preference data
-     *
+     * Write the shared preference data.
      * @param context current context
-     * @param input total distance value
-     *
+     * @param input total distance value (meters)
      */
     private static void setSharedTotalDistance(Context context, float input)
     {
@@ -72,10 +67,8 @@ public class DistanceMonitor
     }
 
     /**
-     * Set the distance value
-     *
-     * @param distance set new distance value  (meters)
-     *
+     * Set the distance value.
+     * @param distance set new distance value (meters)
      */
     public void setDistance(float distance)
     {
@@ -91,12 +84,9 @@ public class DistanceMonitor
     }
 
     /**
-     * Update distance data when GPS is refreshed
-     *
+     * Update distance data when GPS is refreshed.
      * @param location new location
-     *
      * @return return distance updated about new position
-     *
      */
     public float updateDistance(Location location)
     {
@@ -110,10 +100,8 @@ public class DistanceMonitor
     }
 
     /**
-     * Get the distance value
-     *
+     * Get the distance value.
      * @return get distance value  (meters)
-     *
      */
     public float getDistance()
     {
@@ -124,10 +112,8 @@ public class DistanceMonitor
      * Read the total distance value, (the value was already read
      * form sharedPreferences in the constructor, this function
      * not read the value from sharedPreferences, but from static
-     * data inside the class
-     *
+     * data inside the class.
      * @return total distance value (meters)
-     *
      */
     public float getTotalDistance()
     {
@@ -139,10 +125,8 @@ public class DistanceMonitor
      * form sharedPreferences in the constructor, this function
      * not write the value into sharedPreferences, but from static
      * data inside the class, use writeTotalDistance() or
-     * readTotalDistance instead
-     *
+     * readTotalDistance instead.
      * @param totalDistance total distance value (meters)
-     *
      */
     public void setTotalDistance(float totalDistance)
     {
@@ -150,10 +134,8 @@ public class DistanceMonitor
     }
 
     /**
-     * Write the total distance value into sharedPreference
-     *
+     * Write the total distance value into sharedPreference.
      * @param input total distance value to be write (meters)
-     *
      */
     public void writeTotalDistance(float input)
     {
@@ -162,8 +144,7 @@ public class DistanceMonitor
     }
 
     /**
-     * Write the total distance value into sharedPreference
-     *
+     * Write the total distance value into sharedPreference.
      */
     public void writeTotalDistance()
     {
@@ -171,10 +152,8 @@ public class DistanceMonitor
     }
 
     /**
-     * Write the total distance value into sharedPreference
-     *
+     * Write the total distance value into sharedPreference.
      * @return total value from sharedPreference (meters)
-     *
      */
     public float readTotalDistance()
     {

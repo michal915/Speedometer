@@ -3,13 +3,24 @@ package com.example.michal.speedmeter;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+/**
+ * VelocityMonitor monitoring the changes of
+ * actual velocity and maximal speed since the
+ * application was installed all values is
+ * represented in km/h.
+ */
 public class VelocityMonitor {
 
-    private float   mVelocity;    // km/h
-    private float   mMaxVelocity; // km/h
+    private float   mVelocity;
+    private float   mMaxVelocity;
     private Context mContext;
 
-
+    /**
+     * Constructor initialize actual context.
+     * and velocity
+     * @param context actual context
+     * @param velocity velocity in km/h
+     */
     VelocityMonitor(Context context, float velocity)
     {
         mContext = context;
@@ -17,6 +28,10 @@ public class VelocityMonitor {
         mMaxVelocity = getSharedMaxVelocity(context);
     }
 
+    /**
+     * Constructor, velocity is setup to zero.
+     * @param context
+     */
     VelocityMonitor(Context context)
     {
         mContext = context;
@@ -24,12 +39,9 @@ public class VelocityMonitor {
         mMaxVelocity = getSharedMaxVelocity(context);
     }
 
-
     /**
-     * Get the shared pereference object
-     *
+     * Get the shared preference object.
      * @param context current context
-     *
      * @return shared preferences object
      *
      */
@@ -39,10 +51,8 @@ public class VelocityMonitor {
     }
 
     /**
-     * Read the shared preference data
-     *
+     * Read the shared preference data.
      * @param context current context
-     *
      * @return max velocity since application installed
      *
      */
@@ -52,8 +62,7 @@ public class VelocityMonitor {
     }
 
     /**
-     * Write the shared preference data
-     *
+     * Write the shared preference data.
      * @param context current context
      * @param input max velocity
      *
@@ -65,6 +74,10 @@ public class VelocityMonitor {
         editor.apply();
     }
 
+    /**
+     * Update velocity and max velocity value.
+     * @param velocityMps
+     */
     public void updateVelocity(float velocityMps)
     {
         ConvertSpeed.mpsTokph(velocityMps);
@@ -75,11 +88,19 @@ public class VelocityMonitor {
         }
     }
 
+    /**
+     * Get velocity value.
+     * @return velocity km/h
+     */
     public float getVelocity()
     {
         return mVelocity;
     }
 
+    /**
+     * Set velocity value.
+     * @param velocity km/h
+     */
     public void setVelocity(float velocity)
     {
         mVelocity = velocity;
@@ -91,11 +112,21 @@ public class VelocityMonitor {
         setSharedMaxVelocity(mContext, mMaxVelocity);
     }
 
+    /**
+     * Get maximal velocity since application
+     * was installed, can be reset in reset option in settings.
+     * @return maximal velocity km/h
+     */
     public float getMaxVelocity()
     {
         return mMaxVelocity;
     }
 
+    /**
+     * Read the maximal velocity from
+     * shared preferences.
+     * @return maximal velocity from shared preferences
+     */
     public float readMaxVelocity()
     {
         return getSharedMaxVelocity(mContext);
