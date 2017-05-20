@@ -33,21 +33,22 @@ public class MainActivity extends AppCompatActivity {
 
     boolean isStarted = false;
 
-    private void showEnableGpsDialog(String tmpWhereIsCalled)
+    private void showEnableGpsDialog()
     {
         AlertDialog.Builder alertDialogBuilder =
                 new AlertDialog.Builder(this)
-                        .setTitle("GPS is Settings")
-                        .setMessage("GPS is not Enabled. [" + tmpWhereIsCalled + "]?")
-                                //"/*Do you want to go to settings menu*/ "
+                        .setTitle(getResources().getString(R.string.gps_dialog_title))
+                        .setMessage(getResources().getString(R.string.gps_dialog_message))
 
-                        .setPositiveButton("Settings", new DialogInterface.OnClickListener()
+                        .setPositiveButton(getResources().getString(R.string.gps_dialog_button_positive),
+                                new DialogInterface.OnClickListener()
                         {
                             public void onClick(DialogInterface dialog, int which)
                             {
                                 startActivity(new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS));
                             }
-                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener()
+                        }).setNegativeButton(getResources().getString(R.string.gps_dialog_button_negative),
+                        new DialogInterface.OnClickListener()
                 {
                     public void onClick(DialogInterface dialog, int which)
                     {
@@ -152,7 +153,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
         {
-            showEnableGpsDialog("onCreate");
+            showEnableGpsDialog();
         }
 
         locationListener = new LocationListener() {
@@ -201,7 +202,7 @@ public class MainActivity extends AppCompatActivity {
             {
                 if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
                 {
-                    showEnableGpsDialog("onProviderDisabled");
+                    showEnableGpsDialog();
                 }
             }
         };

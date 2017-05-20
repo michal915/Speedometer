@@ -13,7 +13,12 @@
 
     <string name="menu_max_vel">Max Velocity</string>
     <string name="menu_distance">Distance</string>
-    <string name="menu_full_distance">Total distance</string>
+    <string name="menu_full_distance">Całkowity dystans</string>
     <string name="menu_time">Time</string>
+
+    <string name="gps_dialog_message">GPS is not Enabled. Go to te settings menu?</string>
+    <string name="gps_dialog_title">GPS Settings</string>
+    <string name="gps_dialog_button_positive">Settings</string>
+    <string name="gps_dialog_button_negative">Cancel</string>
 
 </resources>

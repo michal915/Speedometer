@@ -71,7 +71,7 @@ public class VelocityMonitor {
     {
         SharedPreferences.Editor editor = getSharedPreference(context).edit();
         editor.putFloat(Keys.maxVelocity, input);
-        editor.apply();
+        editor.commit();
     }
 
     /**
@@ -106,9 +106,13 @@ public class VelocityMonitor {
         mVelocity = velocity;
     }
 
-    public void writeMaxVelocity(float velocity)
+    /**
+     * Write max velocity into shared preferences
+     * @param maxVelocity actual max velocity km/h
+     */
+    public void writeMaxVelocity(float maxVelocity)
     {
-        mMaxVelocity = velocity;
+        mMaxVelocity = maxVelocity;
         setSharedMaxVelocity(mContext, mMaxVelocity);
     }
 
