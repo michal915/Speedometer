@@ -4,13 +4,15 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 
+import java.util.Observable;
+
 /**
  * DistanceMonitor monitoring the values of
  * actual distance and total distance since the
  * application was installed all values is
  * represented in meters.
  */
-public class DistanceMonitor
+public class DistanceMonitor  extends Observable
 {
     private Location      mActualLocation;
     private Location      mLastLocation;
@@ -73,6 +75,8 @@ public class DistanceMonitor
     public void setDistance(float distance)
     {
         mDistance = distance;
+        setChanged();
+        notifyObservers(mDistance);
     }
 
     /**
@@ -86,9 +90,8 @@ public class DistanceMonitor
     /**
      * Update distance data when GPS is refreshed.
      * @param location new location
-     * @return return distance updated about new position
      */
-    public float updateDistance(Location location)
+    public void updateDistance(Location location)
     {
         mActualLocation = location;
         final float distanceToLast = location.distanceTo(mLastLocation);
@@ -96,7 +99,8 @@ public class DistanceMonitor
         mTotalDistance += distanceToLast;
         mLastLocation = mActualLocation;
 
-        return mDistance;
+        setChanged();
+        notifyObservers(mDistance);
     }
 
     /**

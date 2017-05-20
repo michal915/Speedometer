@@ -3,14 +3,16 @@ package com.example.michal.speedmeter;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Observable;
+
 /**
  * VelocityMonitor monitoring the changes of
  * actual velocity and maximal speed since the
  * application was installed all values is
  * represented in km/h.
  */
-public class VelocityMonitor {
-
+public class VelocityMonitor extends Observable
+{
     private float   mVelocity;
     private float   mMaxVelocity;
     private Context mContext;
@@ -86,6 +88,8 @@ public class VelocityMonitor {
         {
             writeMaxVelocity(mVelocity);
         }
+        setChanged();
+        notifyObservers(mVelocity);
     }
 
     /**
@@ -104,6 +108,8 @@ public class VelocityMonitor {
     public void setVelocity(float velocity)
     {
         mVelocity = velocity;
+        setChanged();
+        notifyObservers(mVelocity);
     }
 
     /**

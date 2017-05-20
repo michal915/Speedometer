@@ -7,13 +7,16 @@ import android.widget.TextView;
 
 import java.math.BigDecimal;
 import java.util.Locale;
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * Printer is using to print the data into textView boxes
  * and other gui elements
  */
-public class Printer {
-    private TextView mTextVelocityView;
+public class Printer
+{
+    TextView mTextVelocityView;
     private TextView mTextDistanceView;
     private TextView mTextFullDistanceView;
     private TextView mTextTimeView;

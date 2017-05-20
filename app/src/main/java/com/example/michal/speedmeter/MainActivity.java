@@ -15,7 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
-
 import java.util.Observable;
 import java.util.Observer;
 
@@ -29,43 +28,44 @@ public class MainActivity extends AppCompatActivity {
     LocationManager  locationManager;
     LocationListener locationListener;
 
+//    private class PrinterObserver implements Observer
+//    {
+//
+//        @Override
+//        public void update(Observable o, Object arg)
+//        {
+//
+//            System.out.println(arg + " " + ((TestMonitor)o).name);
+//        }
+//    }
 
-    private class PrinterObserver implements Observer
-    {
-        @Override
-        public void update(Observable o, Object arg)
-        {
-            System.out.println(arg + " " + ((TestMonitor)o).name);
-        }
-    }
-
-    private class TestPrinter
-    {
-        PrinterObserver mPrinterObserver;
-        TestPrinter()
-        {
-            mPrinterObserver = new PrinterObserver();
-        }
-
-        public Observer getPrinterObserver()
-        {
-            return mPrinterObserver;
-        }
-    }
+//    private class PrinterVelocity
+//    {
+//        Printer mPrinterObserver;
+//        PrinterVelocity()
+//        {
+//            mPrinterObserver = new PrinterObserver();
+//        }
+//
+//        public Observer getPrinterObserver()
+//        {
+//            return mPrinterObserver;
+//        }
+//    }
 
 
-    private class TestMonitor extends Observable {
+//    private class TestMonitor extends Observable {
+//
+//        public String name = "Observable";
+//
+//        public void changeMe(String word) {
+//            setChanged();
+//            notifyObservers(word);
+//        }
+//    }
 
-        public String name = "Observable";
-
-        public void changeMe(String word) {
-            setChanged();
-            notifyObservers(word);
-        }
-    }
-
-    TestMonitor dataMonitor;
-    TestPrinter testPrinter;
+   // TestMonitor dataMonitor;
+   // TestPrinter testPrinter;
 
     Printer         printer;
     DistanceMonitor distanceMonitor;
@@ -114,8 +114,9 @@ public class MainActivity extends AppCompatActivity {
             final Location location = locationManager.getLastKnownLocation(locationManager.GPS_PROVIDER);
 
             distanceMonitor = new DistanceMonitor(this, location);
-            timeMonitor = new TimeMonitor(location.getTime());
+            distanceMonitor.addObserver(new PrinterDistance(this));
 
+            timeMonitor = new TimeMonitor(location.getTime());
             isStarted = true;
         }
 
@@ -177,9 +178,9 @@ public class MainActivity extends AppCompatActivity {
         velocityMonitor.setVelocity(savedInstanceState.getFloat(Keys.velocity));
 
         printer.printTime(timeMonitor.getElapsedTime());
-        printer.printDistance(distanceMonitor.getDistance());
+    //    printer.printDistance(distanceMonitor.getDistance());
         printer.printTotalDistance(distanceMonitor.getTotalDistance());
-        printer.printVelocity(velocityMonitor.getVelocity());
+    //    printer.printVelocity(velocityMonitor.getVelocity());
         printer.printMaxVelocity(velocityMonitor.readMaxVelocity());
     }
 
@@ -188,13 +189,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dataMonitor = new TestMonitor();
-        testPrinter = new TestPrinter();
+      //  dataMonitor = new TestMonitor();
+     //   testPrinter = new TestPrinter();
 
-        dataMonitor.addObserver(testPrinter.getPrinterObserver() );
+      //  dataMonitor.addObserver(testPrinter.getPrinterObserver() );
 
         printer = new Printer(this);
+
         velocityMonitor = new VelocityMonitor(this);
+        velocityMonitor.addObserver(new PrinterVelocity(this));
+
+
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER))
@@ -206,8 +211,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location)
             {
-                String data = location.getLatitude() + "";
-                dataMonitor.changeMe(data);
+                //    String data = location.getLatitude() + "";
+           //     dataMonitor.changeMe(data);
 
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
                 if(isStarted)
@@ -230,7 +235,7 @@ public class MainActivity extends AppCompatActivity {
                 printer.printTime(timeMonitor.getElapsedTime());
                 printer.printDistance(distanceMonitor.getDistance());
                 printer.printTotalDistance(distanceMonitor.getTotalDistance());
-                printer.printVelocity(velocityMonitor.getVelocity());
+                //printer.printVelocity(velocityMonitor.getVelocity());
                 printer.printMaxVelocity(velocityMonitor.getMaxVelocity());
             }
 
