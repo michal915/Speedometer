@@ -1,0 +1,49 @@
+Structure:
+
+  GPS on status changed
+      |
+      |
+      \/
+
+  >>Observable objects<<
+    DistanceMonitor _____
+    VelocityMonitor __|
+    TimeMonitor ______|
+      |               |
+      |               |
+     \/               |_________>>>>  <<Obserwator objects>>
+//   notify                             DistancePrinter
+// when gps update                      VelocityPrinter   // reprint data when observator
+                                        TimePrinter       // sent notify Function
+
+
+
+
+Class Structure:
+
+  Printer
+
+    * getVelocityObserver()
+    * getTimeObserver()
+    * getDistanceObserver()
+  
+    * printVelocity()
+    * printTime()
+    * printDistance()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

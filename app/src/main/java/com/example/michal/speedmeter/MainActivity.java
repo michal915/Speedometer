@@ -16,6 +16,9 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import java.util.Observable;
+import java.util.Observer;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,6 +28,44 @@ public class MainActivity extends AppCompatActivity {
 
     LocationManager  locationManager;
     LocationListener locationListener;
+
+
+    private class PrinterObserver implements Observer
+    {
+        @Override
+        public void update(Observable o, Object arg)
+        {
+            System.out.println(arg + " " + ((TestMonitor)o).name);
+        }
+    }
+
+    private class TestPrinter
+    {
+        PrinterObserver mPrinterObserver;
+        TestPrinter()
+        {
+            mPrinterObserver = new PrinterObserver();
+        }
+
+        public Observer getPrinterObserver()
+        {
+            return mPrinterObserver;
+        }
+    }
+
+
+    private class TestMonitor extends Observable {
+
+        public String name = "Observable";
+
+        public void changeMe(String word) {
+            setChanged();
+            notifyObservers(word);
+        }
+    }
+
+    TestMonitor dataMonitor;
+    TestPrinter testPrinter;
 
     Printer         printer;
     DistanceMonitor distanceMonitor;
@@ -147,6 +188,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        dataMonitor = new TestMonitor();
+        testPrinter = new TestPrinter();
+
+        dataMonitor.addObserver(testPrinter.getPrinterObserver() );
+
         printer = new Printer(this);
         velocityMonitor = new VelocityMonitor(this);
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -160,6 +206,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location)
             {
+                String data = location.getLatitude() + "";
+                dataMonitor.changeMe(data);
+
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
                 if(isStarted)
                 {
