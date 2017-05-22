@@ -1,6 +1,16 @@
 package com.example.michal.speedmeter;
 
-public class ConvertDistance {
+import android.os.Build;
+
+public final class ConvertDistance {
+
+    /**
+     * Constructor, private we don't want to create this object
+     */
+    private ConvertDistance()
+    {
+
+    }
 
     /**
      * Meters to Miles

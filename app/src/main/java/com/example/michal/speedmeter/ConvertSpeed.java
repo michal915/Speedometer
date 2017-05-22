@@ -1,6 +1,15 @@
 package com.example.michal.speedmeter;
 
-public class ConvertSpeed {
+public final class ConvertSpeed {
+
+    /**
+     * Constructor, private we don't want to create this object
+     */
+    private ConvertSpeed()
+    {
+
+    }
+
     /**
      * Meter per second to Kilometers per hours
      * @param mps velocity m/s

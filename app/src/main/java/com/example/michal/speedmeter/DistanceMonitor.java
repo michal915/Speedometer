@@ -168,7 +168,7 @@ public class DistanceMonitor  extends Observable
      */
     private void sendMessage()
     {
-        Pair<Float, Float> distanceMessage = Pair.create(mDistance, mTotalDistance);
+        Pair<Float, Float> distanceMessage = Pair.create(getDistance(), getTotalDistance());
         setChanged();
         notifyObservers(distanceMessage);
     }
