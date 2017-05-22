@@ -3,6 +3,7 @@ package com.example.michal.speedmeter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.util.Pair;
 
 import java.util.Observable;
 
@@ -75,8 +76,7 @@ public class DistanceMonitor  extends Observable
     public void setDistance(float distance)
     {
         mDistance = distance;
-        setChanged();
-        notifyObservers(mDistance);
+        sendMessage();
     }
 
     /**
@@ -99,8 +99,7 @@ public class DistanceMonitor  extends Observable
         mTotalDistance += distanceToLast;
         mLastLocation = mActualLocation;
 
-        setChanged();
-        notifyObservers(mDistance);
+        sendMessage();
     }
 
     /**
@@ -162,5 +161,15 @@ public class DistanceMonitor  extends Observable
     public float readTotalDistance()
     {
         return getSharedTotalDistance(mContext);
+    }
+
+    /**
+     * Send data to observers
+     */
+    private void sendMessage()
+    {
+        Pair<Float, Float> distanceMessage = Pair.create(mDistance, mTotalDistance);
+        setChanged();
+        notifyObservers(distanceMessage);
     }
 }

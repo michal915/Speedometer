@@ -2,6 +2,7 @@ package com.example.michal.speedmeter;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Pair;
 
 import java.util.Observable;
 
@@ -88,8 +89,8 @@ public class VelocityMonitor extends Observable
         {
             writeMaxVelocity(mVelocity);
         }
-        setChanged();
-        notifyObservers(mVelocity);
+
+        sendMessage();
     }
 
     /**
@@ -108,8 +109,7 @@ public class VelocityMonitor extends Observable
     public void setVelocity(float velocity)
     {
         mVelocity = velocity;
-        setChanged();
-        notifyObservers(mVelocity);
+        sendMessage();
     }
 
     /**
@@ -140,5 +140,15 @@ public class VelocityMonitor extends Observable
     public float readMaxVelocity()
     {
         return getSharedMaxVelocity(mContext);
+    }
+
+    /**
+     * Send data to observers
+     */
+    private void sendMessage()
+    {
+        Pair<Float, Float> distanceMessage = Pair.create(getVelocity(), getMaxVelocity());
+        setChanged();
+        notifyObservers(distanceMessage);
     }
 }

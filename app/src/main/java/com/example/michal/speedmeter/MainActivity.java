@@ -26,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
     LocationManager  locationManager;
     LocationListener locationListener;
 
-    Printer         printer;
-    DistanceMonitor distanceMonitor;
-    TimeMonitor     timeMonitor;
-    VelocityMonitor velocityMonitor;
+    DistanceMonitor  distanceMonitor;
+    TimeMonitor      timeMonitor;
+    VelocityMonitor  velocityMonitor;
 
     boolean isStarted = false;
 
@@ -136,17 +135,12 @@ public class MainActivity extends AppCompatActivity {
         distanceMonitor.setDistance(savedInstanceState.getFloat(Keys.distance));
         timeMonitor.setElapsedTime(savedInstanceState.getLong(Keys.time));
         velocityMonitor.setVelocity(savedInstanceState.getFloat(Keys.velocity));
-
-        printer.printTotalDistance(distanceMonitor.getTotalDistance());
-        printer.printMaxVelocity(velocityMonitor.readMaxVelocity());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        printer = new Printer(this);
 
         velocityMonitor = new VelocityMonitor(this);
         velocityMonitor.addObserver(new PrinterVelocity(this));
@@ -179,9 +173,6 @@ public class MainActivity extends AppCompatActivity {
                     velocityMonitor.updateVelocity(0);
                     timeMonitor.updateTime(location.getTime());
                 }
-
-                printer.printTotalDistance(distanceMonitor.getTotalDistance());
-                printer.printMaxVelocity(velocityMonitor.getMaxVelocity());
             }
 
             @Override
