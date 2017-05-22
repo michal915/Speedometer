@@ -15,8 +15,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
-import java.util.Observable;
-import java.util.Observer;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -27,45 +25,6 @@ public class MainActivity extends AppCompatActivity {
 
     LocationManager  locationManager;
     LocationListener locationListener;
-
-//    private class PrinterObserver implements Observer
-//    {
-//
-//        @Override
-//        public void update(Observable o, Object arg)
-//        {
-//
-//            System.out.println(arg + " " + ((TestMonitor)o).name);
-//        }
-//    }
-
-//    private class PrinterVelocity
-//    {
-//        Printer mPrinterObserver;
-//        PrinterVelocity()
-//        {
-//            mPrinterObserver = new PrinterObserver();
-//        }
-//
-//        public Observer getPrinterObserver()
-//        {
-//            return mPrinterObserver;
-//        }
-//    }
-
-
-//    private class TestMonitor extends Observable {
-//
-//        public String name = "Observable";
-//
-//        public void changeMe(String word) {
-//            setChanged();
-//            notifyObservers(word);
-//        }
-//    }
-
-   // TestMonitor dataMonitor;
-   // TestPrinter testPrinter;
 
     Printer         printer;
     DistanceMonitor distanceMonitor;
@@ -117,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             distanceMonitor.addObserver(new PrinterDistance(this));
 
             timeMonitor = new TimeMonitor(location.getTime());
+            timeMonitor.addObserver(new PrinterTime(this));
             isStarted = true;
         }
 
@@ -177,10 +137,7 @@ public class MainActivity extends AppCompatActivity {
         timeMonitor.setElapsedTime(savedInstanceState.getLong(Keys.time));
         velocityMonitor.setVelocity(savedInstanceState.getFloat(Keys.velocity));
 
-        printer.printTime(timeMonitor.getElapsedTime());
-    //    printer.printDistance(distanceMonitor.getDistance());
         printer.printTotalDistance(distanceMonitor.getTotalDistance());
-    //    printer.printVelocity(velocityMonitor.getVelocity());
         printer.printMaxVelocity(velocityMonitor.readMaxVelocity());
     }
 
@@ -189,16 +146,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-      //  dataMonitor = new TestMonitor();
-     //   testPrinter = new TestPrinter();
-
-      //  dataMonitor.addObserver(testPrinter.getPrinterObserver() );
-
         printer = new Printer(this);
 
         velocityMonitor = new VelocityMonitor(this);
         velocityMonitor.addObserver(new PrinterVelocity(this));
-
 
         locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
@@ -211,9 +162,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLocationChanged(Location location)
             {
-                //    String data = location.getLatitude() + "";
-           //     dataMonitor.changeMe(data);
-
                 // TODO: if gps paused, or no speed clear a speed data temporary ignore it, back when real GPS tests will be done
                 if(isStarted)
                 {
@@ -231,11 +179,8 @@ public class MainActivity extends AppCompatActivity {
                     velocityMonitor.updateVelocity(0);
                     timeMonitor.updateTime(location.getTime());
                 }
-                
-                printer.printTime(timeMonitor.getElapsedTime());
-                printer.printDistance(distanceMonitor.getDistance());
+
                 printer.printTotalDistance(distanceMonitor.getTotalDistance());
-                //printer.printVelocity(velocityMonitor.getVelocity());
                 printer.printMaxVelocity(velocityMonitor.getMaxVelocity());
             }
 

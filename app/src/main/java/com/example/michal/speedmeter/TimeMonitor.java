@@ -1,10 +1,13 @@
 package com.example.michal.speedmeter;
 
+import java.util.Observable;
+
 /**
  * TimeMonitor monitoring the time using GPS time since application
  * running, incremented only when device hasSpeed
  */
-public class TimeMonitor {
+public class TimeMonitor  extends Observable
+{
     private long mActualTime;
     private long mLastTime;
     private long mElapsedTime;
@@ -48,6 +51,9 @@ public class TimeMonitor {
     public void setElapsedTime(long time)
     {
         mElapsedTime = time;
+
+        setChanged();
+        notifyObservers(mElapsedTime);
     }
 
     /**
@@ -59,6 +65,9 @@ public class TimeMonitor {
         mActualTime = actualTime;
         mElapsedTime += (mActualTime - mLastTime);
         mLastTime = mActualTime;
+
+        setChanged();
+        notifyObservers(mElapsedTime);
     }
 
     /**
