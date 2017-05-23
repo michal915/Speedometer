@@ -1,4 +1,4 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Printer;
 
 import android.app.Activity;
 import android.util.Pair;
@@ -8,7 +8,7 @@ import java.util.Observer;
 
 public class PrinterVelocity extends Printer implements Observer
 {
-    PrinterVelocity(Activity activity)
+    public PrinterVelocity(Activity activity)
     {
         super(activity);
     }

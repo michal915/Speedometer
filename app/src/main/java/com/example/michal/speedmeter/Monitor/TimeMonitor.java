@@ -1,4 +1,4 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Monitor;
 
 import java.util.Observable;
 
@@ -18,7 +18,7 @@ public class TimeMonitor  extends Observable
      * correct values
      * @param time linux epoch time in millisecond
      */
-    TimeMonitor(long time)
+    public TimeMonitor(long time)
     {
         mActualTime = time;
         mLastTime = time;

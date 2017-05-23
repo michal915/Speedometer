@@ -1,9 +1,11 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Printer;
 
 import android.app.Activity;
 import android.text.SpannableString;
 import android.text.style.RelativeSizeSpan;
 import android.widget.TextView;
+
+import com.example.michal.speedmeter.R;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -27,7 +29,7 @@ public class Printer
      * Constructor initialize the gui objects using activity from main
      * @param activity
      */
-    Printer(Activity activity)
+    public Printer(Activity activity)
     {
         mActivity = activity;
         mTextVelocityView     = (TextView) mActivity.findViewById(R.id.text_vel_value);

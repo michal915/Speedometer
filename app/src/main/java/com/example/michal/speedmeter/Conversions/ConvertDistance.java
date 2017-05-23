@@ -1,6 +1,4 @@
-package com.example.michal.speedmeter;
-
-import android.os.Build;
+package com.example.michal.speedmeter.Conversions;
 
 public final class ConvertDistance {
 

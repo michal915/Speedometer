@@ -16,6 +16,13 @@ import android.view.MenuItem;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.example.michal.speedmeter.Monitor.DistanceMonitor;
+import com.example.michal.speedmeter.Monitor.TimeMonitor;
+import com.example.michal.speedmeter.Monitor.VelocityMonitor;
+import com.example.michal.speedmeter.Printer.PrinterDistance;
+import com.example.michal.speedmeter.Printer.PrinterTime;
+import com.example.michal.speedmeter.Printer.PrinterVelocity;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,9 +33,9 @@ public class MainActivity extends AppCompatActivity {
     LocationManager  locationManager;
     LocationListener locationListener;
 
-    DistanceMonitor  distanceMonitor;
-    TimeMonitor      timeMonitor;
-    VelocityMonitor  velocityMonitor;
+    DistanceMonitor distanceMonitor;
+    TimeMonitor timeMonitor;
+    VelocityMonitor velocityMonitor;
 
     boolean isStarted = false;
 

@@ -1,4 +1,4 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Printer;
 
 import android.app.Activity;
 
@@ -7,7 +7,7 @@ import java.util.Observer;
 
 public class PrinterTime extends Printer implements Observer
 {
-    PrinterTime(Activity activity)
+    public PrinterTime(Activity activity)
     {
         super(activity);
     }

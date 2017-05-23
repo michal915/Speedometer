@@ -1,4 +1,4 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Conversions;
 
 public final class ConvertSpeed {
 

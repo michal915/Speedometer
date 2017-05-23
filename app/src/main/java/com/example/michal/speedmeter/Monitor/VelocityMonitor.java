@@ -1,8 +1,11 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Monitor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
+
+import com.example.michal.speedmeter.Conversions.ConvertSpeed;
+import com.example.michal.speedmeter.Keys;
 
 import java.util.Observable;
 
@@ -24,7 +27,7 @@ public class VelocityMonitor extends Observable
      * @param context actual context
      * @param velocity velocity in km/h
      */
-    VelocityMonitor(Context context, float velocity)
+    public VelocityMonitor(Context context, float velocity)
     {
         mContext = context;
         mVelocity = velocity;
@@ -35,7 +38,7 @@ public class VelocityMonitor extends Observable
      * Constructor, velocity is setup to zero.
      * @param context
      */
-    VelocityMonitor(Context context)
+    public VelocityMonitor(Context context)
     {
         mContext = context;
         mVelocity = 0;

@@ -1,9 +1,11 @@
-package com.example.michal.speedmeter;
+package com.example.michal.speedmeter.Monitor;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.util.Pair;
+
+import com.example.michal.speedmeter.Keys;
 
 import java.util.Observable;
 
@@ -29,7 +31,7 @@ public class DistanceMonitor  extends Observable
      * @param location current location
      *
      */
-    DistanceMonitor(Context context, Location location) {
+    public DistanceMonitor(Context context, Location location) {
         mActualLocation = location;
         mLastLocation = location;
         mDistance = 0.0f;
