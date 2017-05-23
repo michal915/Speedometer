@@ -21,4 +21,7 @@
     <string name="gps_dialog_button_positive">Settings</string>
     <string name="gps_dialog_button_negative">Cancel</string>
 
+    <string name="settings_units">Units</string>
+
+
 </resources>
